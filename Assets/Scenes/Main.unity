@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _depth: 4
-  _wide: 4
+  _width: 4
 --- !u!1 &664746856
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _object: {fileID: 1141059583500585593, guid: 658a80b68a267fb4aa3df56a392c7265, type: 3}
   _heightInterval: 120
-  _wideInterval: 120
+  _widthInterval: 120
   _isShow: 1
 --- !u!1 &705507993
 GameObject:
@@ -740,8 +740,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1793555541}
   - component: {fileID: 1793555540}
+  - component: {fileID: 1793555542}
   m_Layer: 0
-  m_Name: SetStartPos
+  m_Name: RunawayManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -762,7 +763,7 @@ MonoBehaviour:
   _lineUpObjects: {fileID: 1182135449}
   _yPos: 0.8
   _gameObject: {fileID: 5248039990694342562, guid: 42ca984a56ff6dd4083530824a94c54d, type: 3}
-  _amount: 8
+  _amount: 9
   _isSet: 1
 --- !u!4 &1793555541
 Transform:
@@ -779,6 +780,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1793555542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793555539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46163cd96b14b8547b00e7eb071ada5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

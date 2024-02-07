@@ -2,14 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
 /// 特定のオブジェクトを碁盤の目のように配置する
+/// GridManagerのステートが変更するたびに、UIの表示も変更する
 /// </summary>
 public class LineUpUI : MonoBehaviour
 {
     [SerializeField, Tooltip("配置したいオブジェクト")] GameObject _object = default;
     [Tooltip("縦の個数")] int _height = 0;
-    [Tooltip("横の個数")] int _wide = 0;
+    [Tooltip("横の個数")] int _width = 0;
     [SerializeField, Tooltip("縦の間隔")] float _heightInterval = 1.0f;
-    [SerializeField, Tooltip("横の間隔")] float _wideInterval = 1.0f;
+    [SerializeField, Tooltip("横の間隔")] float _widthInterval = 1.0f;
     [Tooltip("UI")] GameObject[,] _gameObjectArray = default;
     [Tooltip("基準となる位置")] Vector3 _standardPos = default;
 
@@ -24,22 +25,22 @@ public class LineUpUI : MonoBehaviour
     void Start()
     {
         _height = GridManager.Instance.Depth;
-        _wide = GridManager.Instance.Wide;
+        _width = GridManager.Instance.Width;
         _standardPos = transform.position;
-        _gameObjectArray = new GameObject[_height, _wide];
+        _gameObjectArray = new GameObject[_height, _width];
 
-        _indexArray = new Text[_height, _wide];
-        _numArray = new Text[_height, _wide];
+        _indexArray = new Text[_height, _width];
+        _numArray = new Text[_height, _width];
 
         for (var i = 0; i < _height; i++)
         {
-            for (var j = 0; j < _wide; j++)
+            for (var j = 0; j < _width; j++)
             {
                 // 自身の子オブジェクトにする
                 var go = Instantiate(_object, transform);
                 if (go)
                 {
-                    float xPos = j * _wideInterval;
+                    float xPos = j * _widthInterval;
                     float yPos = -i * _heightInterval;
                     go.transform.position = _standardPos + new Vector3(xPos, yPos, 0f);
                     _gameObjectArray[i, j] = go;
@@ -55,12 +56,12 @@ public class LineUpUI : MonoBehaviour
         {
             for (var i = 0; i < _height; i++)
             {
-                for (var j = 0; j < _wide; j++)
+                for (var j = 0; j < _width; j++)
                 {
                     ShowText(i, j);
                 }
             }
-            _isShow = false;
+            //_isShow = false;
         }
     }
 
@@ -68,7 +69,7 @@ public class LineUpUI : MonoBehaviour
     {
         for (var i = 0; i < _height; i++)
         {
-            for (var j = 0; j < _wide; j++)
+            for (var j = 0; j < _width; j++)
             {
                 _indexArray[i, j] = _gameObjectArray[i, j].transform.Find("Text_Index").GetComponent<Text>();
                 _numArray[i, j] = _gameObjectArray[i, j].transform.Find("Text_Num").GetComponent<Text>();
@@ -79,7 +80,7 @@ public class LineUpUI : MonoBehaviour
     void ShowText(int i, int j)
     {
         _indexArray[i, j].text = $"{i}, {j}";
-        if (GridManager.Instance.Array != null)
-            _numArray[i, j].text = $"{GridManager.Instance.Array[i, j]}";
+        if (GridManager.Instance.IntArray != null)
+            _numArray[i, j].text = $"{GridManager.Instance.IntArray[i, j]}";
     }
 }

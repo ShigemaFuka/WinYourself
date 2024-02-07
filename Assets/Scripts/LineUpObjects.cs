@@ -9,7 +9,7 @@ public class LineUpObjects : MonoBehaviour
     [Tooltip("横の個数")] int _wide = 0;
     [SerializeField, Tooltip("縦の間隔")] float _depthInterval = 1.0f;
     [SerializeField, Tooltip("横の間隔")] float _wideInterval = 1.0f;
-    [Tooltip("グリッドを成す２次元配列")] GameObject[,] _gameObjectArray = default;
+    [Tooltip("グリッドを成す並びのオブジェクトの配列")] GameObject[,] _gameObjectArray = default;
     [Tooltip("基準となる位置")] Vector3 _standardPos = default;
 
     #region プロパティ
@@ -19,7 +19,7 @@ public class LineUpObjects : MonoBehaviour
     void Start()
     {
         _depth = GridManager.Instance.Depth;
-        _wide = GridManager.Instance.Wide;
+        _wide = GridManager.Instance.Width;
         // これをアタッチするオブジェクトの位置は(0,0,0)に。
         _standardPos = transform.position;
         _gameObjectArray = new GameObject[_depth, _wide];
@@ -36,6 +36,9 @@ public class LineUpObjects : MonoBehaviour
                     float zPos = -i * _depthInterval;
                     go.transform.position = _standardPos + new Vector3(xPos, 0f, zPos);
                     _gameObjectArray[i, j] = go;
+                    // 位置情報を設定する
+                    //GridManager.Instance.Vector3Array[i, j] = go.transform.position;
+                    //Debug.Log("pos : " + GridManager.Instance.Vector3Array[i, j]);
                 }
             }
         }
