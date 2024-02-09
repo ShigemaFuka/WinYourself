@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,6 @@ using UnityEngine;
 /// </summary>
 public class Move : MonoBehaviour
 {
-    //[Header("一度に移動できるマスの数")]
-    //[SerializeField, Tooltip("一度に移動できるマスの数")] int _step = 1;
-    //[Tooltip("縦の移動範囲")] int _depthMax = default;
-    //[Tooltip("横の移動範囲")] int _widthMax = default;
-    //[Tooltip("移動先X")] int _pointX = 0;
-    //[Tooltip("移動先Y")] int _pointY = 0;
     [Tooltip("現在の位置  例）d, w")] int[] _currentIndex = new int[2];
     [Tooltip("移動できる範囲のリスト")] List<string> _mobileList = new();
     [Header("移動できるエリアを探す準備をするか")]
@@ -23,24 +18,33 @@ public class Move : MonoBehaviour
     [SerializeField, Tooltip("移動するか")] bool _isMove = false;
     [Header("移動先")]
     [SerializeField, Tooltip("移動先")] int[] nums = new int[2];
+    [SerializeField, Tooltip("現在のステート")] State _currentState = State.None;
 
     #region プロパティ
     public int[] CurrentIndex { get => _currentIndex; set => _currentIndex = value; }
     public bool IsPrepare { get => _isPrepare; set => _isPrepare = value; }
     public bool IsMove { get => _isMove; set => _isMove = value; }
+    public State CurrentState { get => _currentState; set => _currentState = value; }
     #endregion
+
+    public enum State
+    {
+        None,
+        Prepare,
+        Move
+    }
 
     void Start()
     {
-        //Debug.Log("CurrentIndex : " + CurrentIndex[0] + "  " + CurrentIndex[1]);
+
     }
 
     void Update()
     {
-        if (_isPrepare)
+        if (CurrentState == State.Prepare)
             PreparationForMovement();
 
-        if (_isMove)
+        if (CurrentState == State.Move)
             Movement();
     }
 
@@ -54,7 +58,8 @@ public class Move : MonoBehaviour
         _mobileList.Clear();
         AddMobileArea();
         Determine();
-        _isPrepare = false;
+        //CurrentState = State.Stay;
+        CurrentState = State.Move;
     }
 
     /// <summary>
@@ -130,8 +135,9 @@ public class Move : MonoBehaviour
         // 今いる場所を更新
         CurrentIndex[0] = nums[0];
         CurrentIndex[1] = nums[1];
-        Debug.Log($"CurrentIndex : {CurrentIndex[0]} {CurrentIndex[1]}");
+        //Debug.Log($"CurrentIndex : {CurrentIndex[0]} {CurrentIndex[1]}");
 
-        _isMove = false;
+        //_isMove = false;
+        CurrentState = State.None;
     }
 }

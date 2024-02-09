@@ -36,16 +36,34 @@ public class LineUpObjects : MonoBehaviour
                     float zPos = -i * _depthInterval;
                     go.transform.position = _standardPos + new Vector3(xPos, 0f, zPos);
                     _gameObjectArray[i, j] = go;
-                    // 位置情報を設定する
-                    //GridManager.Instance.Vector3Array[i, j] = go.transform.position;
-                    //Debug.Log("pos : " + GridManager.Instance.Vector3Array[i, j]);
+                    // 
                 }
             }
         }
+        SetVector();
     }
 
-    void Update()
+    /// <summary>
+    /// GridManagerに位置情報を設定する
+    /// </summary>
+    void SetVector()
     {
+        var array = GameObjectArray;
 
+        // グリッドが未配置のとき
+        if (array.Length == 0)
+        {
+            Debug.LogError("グリッドが未配置");
+            return;
+        }
+
+        for (var i = 0; i < array.GetLength(0); i++)
+        {
+            for (var j = 0; j < array.GetLength(1); j++)
+            {
+                // 位置情報を設定する
+                GridManager.Instance.SetInitializeVector(array, i, j);
+            }
+        }
     }
 }

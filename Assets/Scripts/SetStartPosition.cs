@@ -1,7 +1,6 @@
 using UnityEngine;
-using static Move;
 /// <summary>
-/// オブジェクトをグリッドのどこを初期位置にするか
+/// 逃げる側となるオブジェクトをグリッドのどこを初期位置にするか
 /// boolが真とき配置できる
 /// </summary>
 public class SetStartPosition : MonoBehaviour
@@ -19,11 +18,10 @@ public class SetStartPosition : MonoBehaviour
     [Header("配置するか")]
     [SerializeField, Tooltip("配置するか")] bool _isSet = false;
     Vector3 _position = default;
-    //[Tooltip("置けるマスを探したカウント")] int _count = 0;
 
     void Start()
     {
-        //_count = 0;
+
     }
 
     void Update()
@@ -33,7 +31,6 @@ public class SetStartPosition : MonoBehaviour
             for (var i = 0; i < _amount; i++)
             {
                 SetPosition();
-                SetVector();
             }
             _isSet = false;
         }
@@ -77,34 +74,5 @@ public class SetStartPosition : MonoBehaviour
 
         move.CurrentIndex[0] = _depth;
         move.CurrentIndex[1] = _width;
-        //Debug.Log($" {_depth}  {_wide}");
-
-        //PositionIndex _positionIndex = new PositionIndex();
-        //_positionIndex.Depth = _depth;
-        //_positionIndex.Width = _width;
-        //Debug.Log($"Depth : {_positionIndex.Depth}  Width : {_positionIndex.Width}");
-    }
-
-    void SetVector()
-    {
-        var array = _lineUpObjects.GameObjectArray;
-
-        // グリッドが未配置のとき
-        if (array.Length == 0)
-        {
-            Debug.LogError("グリッドが未配置");
-            return;
-        }
-
-        for (var i = 0; i < array.GetLength(0); i++)
-        {
-            for (var j = 0; j < array.GetLength(1); j++)
-            {
-                // 位置情報を設定する
-                GridManager.Instance.SetInitializeVector(array, i, j);
-                //GridManager.Instance.VectorArray[i, j] = array[i, j].transform.position;
-                //Debug.Log("pos : " + GridManager.Instance.Vector3Array[i, j]);
-            }
-        }
     }
 }
