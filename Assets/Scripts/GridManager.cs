@@ -6,16 +6,24 @@ public class GridManager : MonoBehaviour
     [SerializeField, Tooltip("縦の個数")] int _depth = 4;
     [SerializeField, Tooltip("横の個数")] int _width = 4;
     [Tooltip("各グリッドの状態をintで格納した配列")] static int[,] _intArray = default;
-    [Tooltip("各グリッドの位置情報を格納した配列")] static Vector3[,] _vector3Array = default;
-    //[Tooltip("グリッドを成す２次元配列")] static GameObject[,] _gameObjectArray = default;
+    [Tooltip("各グリッドの位置情報を格納した配列")] static Vector3[,] _vectorArray = default;
+    [Tooltip("グリッドを成すゲームオブジェクト")] static GameObject[,] _gameObjectArray = default;
 
     #region プロパティ
+    /// <summary> 縦の個数 </summary>
     public int Depth { get => _depth; }
-    public int Width { get => _width; }
-    public int[,] IntArray { get => _intArray; set => _intArray = value; }
-    public Vector3[,] VectorArray { get => _vector3Array; set => _vector3Array = value; }
-    //public GameObject[,] GameObjectArray { get => _gameObjectArray; set => _gameObjectArray = value; }
 
+    /// <summary> 横の個数 </summary>
+    public int Width { get => _width; }
+
+    /// <summary> 各グリッドの「状態」をintで格納した配列 </summary>
+    public int[,] IntArray { get => _intArray; /*set => _intArray = value;*/ }
+
+    /// <summary> 各グリッドの「位置情報」を格納した配列 </summary>
+    public Vector3[,] VectorArray { get => _vectorArray; set => _vectorArray = value; }
+
+    /// <summary> グリッドを成すゲームオブジェクト </summary>
+    public GameObject[,] GameObjectArray { get => _gameObjectArray; set => _gameObjectArray = value; }
     #endregion
 
     private void Awake()
@@ -38,9 +46,9 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        IntArray = new int[Depth, Width];
+        _intArray = new int[Depth, Width];
         VectorArray = new Vector3[Depth, Width];
-        //_gameObjectArray = new GameObject[Depth, Width];
+        GameObjectArray = new GameObject[Depth, Width];
     }
 
     void Update()
@@ -61,7 +69,7 @@ public class GridManager : MonoBehaviour
     {
         if (d >= Depth || w >= Width || d < 0 || w < 0)
             return -100;
-        return IntArray[d, w];
+        return _intArray[d, w];
     }
 
     /// <summary>
@@ -72,7 +80,7 @@ public class GridManager : MonoBehaviour
     /// <param name="w"></param>
     public void ChangeArray(GridState state, int d, int w)
     {
-        IntArray[d, w] = (int)state;
+        _intArray[d, w] = (int)state;
     }
 
     public void SetInitializeVector(GameObject[,] go, int i, int j)

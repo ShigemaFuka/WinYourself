@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class SetStartPosition : MonoBehaviour
 {
-    [SerializeField, Tooltip("グリッドを成す並びのオブジェクトの、配列を保持しているクラス")] LineUpObjects _lineUpObjects = default;
+    //[SerializeField, Tooltip("グリッドを成す並びのオブジェクトの、配列を保持しているクラス")] LineUpObjects _lineUpObjects = default;
     [Header("置きたい場所のインデックス番号（縦横）")]
     [Tooltip("置きたい場所（縦）")] int _depth = 0;
     [Tooltip("置きたい場所（横）")] int _width = 0;
@@ -26,6 +26,9 @@ public class SetStartPosition : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.SetStartPosition)
+            _isSet = true;
+
         if (_isSet)
         {
             for (var i = 0; i < _amount; i++)
@@ -33,6 +36,8 @@ public class SetStartPosition : MonoBehaviour
                 SetPosition();
             }
             _isSet = false;
+            //GameManager.Instance.NowTurnState = GameManager.TurnState.ShowRunaway;
+            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.ShowRunaway);
         }
     }
 
@@ -41,7 +46,8 @@ public class SetStartPosition : MonoBehaviour
     /// </summary>
     void SetPosition()
     {
-        var array = _lineUpObjects.GameObjectArray;
+        //var array = _lineUpObjects.GameObjectArray;
+        var array = GridManager.Instance.GameObjectArray;
 
         // グリッドが未配置のとき
         if (array.Length == 0)
@@ -68,7 +74,8 @@ public class SetStartPosition : MonoBehaviour
             Debug.LogWarning(message);
 
         GridManager.Instance.ChangeArray(GridManager.GridState.Exist, _depth, _width);
-        var go = Instantiate(_gameObject, transform);
+        //var go = Instantiate(_gameObject, transform);
+        var go = Instantiate(_gameObject, GridManager.Instance.GameObjectArray[_depth, _width].transform);
         go.transform.position = new Vector3(_position.x, _yPos, _position.z);
         var move = go.GetComponent<Move>();
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4272776965722431128}
   m_Layer: 0
   m_Name: TmpObject
-  m_TagString: Untagged
+  m_TagString: Runaway
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,7 +50,6 @@ MonoBehaviour:
   _isPrepare: 0
   _isMove: 0
   nums: 0000000000000000
-  _waitTime: 1.5
   _currentState: 0
 --- !u!114 &4272776965722431128
 MonoBehaviour:
@@ -64,6 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e245e3d977071c849b1081ea38ff3207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
   num: 0
   _text: {fileID: 597817411463910637}
 --- !u!1 &7188484551681997694

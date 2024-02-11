@@ -1,3 +1,5 @@
+using OpenCover.Framework.Model;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -6,9 +8,9 @@ using UnityEngine;
 /// </summary>
 public class Strike : MonoBehaviour
 {
-    [Header("縦横のインデックス番号")]
-    [SerializeField, Tooltip("縦のインデックス番号")] int _depth = default;
-    [SerializeField, Tooltip("横のインデックス番号")] int _width = default;
+    [Header("対象の縦横のインデックス番号")]
+    [SerializeField, Tooltip("対象の縦のインデックス番号")] int _depth = default;
+    [SerializeField, Tooltip("対象の横のインデックス番号")] int _width = default;
     [Header("カメラ")]
     [SerializeField] Camera _cameraObject = default;
     RaycastHit _hit = default;
@@ -16,20 +18,62 @@ public class Strike : MonoBehaviour
     [SerializeField, Tooltip("叩く側のターンか")] bool _isStrikeTurn = false;
     [Header("叩く場所を決定したか")]
     [SerializeField, Tooltip("叩く場所を決定したか")] bool _isDecision = false;
+    //[Header("グリッドを成す並びのオブジェクトの、配列を保持しているクラス")]
+    //[SerializeField, Tooltip("グリッドを成す並びのオブジェクトの、配列を保持しているクラス")] LineUpObjects _lineUpObjects = default;
+
+    //public delegate void OnCompleteDelegate();
+    //public OnCompleteDelegate onComplete;
 
     void Start()
     {
         _isStrikeTurn = false;
+        _isDecision = false;
     }
 
     void Update()
     {
+        // 第２フェーズでは使わない
+        if (GameManager.Instance.NowPhaseState == GameManager.PhaseState.SecondPhase)
+        {
+            return;
+        }
+
+        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.Record)
+        {
+            _isStrikeTurn = true;
+        }
+
         if (_isStrikeTurn)
         {
             Click();
         }
+
+        // uiか何かで、決定しますか？と聞く
         if (_isDecision)
+        {
             _isStrikeTurn = false;
+            //GameManager.Instance.NowTurnState = GameManager.TurnState.MoveRunaway;
+
+            //onComplete = MyMethod;
+            //// コールバック
+            //onComplete();
+
+            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.MoveRunaway);
+            _isDecision = false;
+        }
+
+        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.Check)
+        {
+            Debug.Log(Check(_depth, _width));
+            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.DeadOrLive);
+        }
+
+        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.DeadOrLive)
+        {
+            StrikeTarget();
+            Debug.Log("StrikeTarget");
+            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.Update);
+        }
     }
 
     /// <summary>
@@ -69,12 +113,57 @@ public class Strike : MonoBehaviour
                     _depth = i;
                     _width = j;
                     Debug.Log(GridManager.Instance.IntArray[_depth, _width]);
-                    //return GridManager.Instance.IntArray[_depth, _width];
-                    //_isStrikeTurn = false;
                     return;
                 }
             }
         }
-        //return -100;
+    }
+
+    /// <summary>
+    /// 逃げる側が居たかどうか
+    /// </summary>
+    /// <param name="depth"></param>
+    /// <param name="width"></param>
+    /// <returns> 真：当たり、　偽：外れ </returns>
+    bool Check(int depth, int width)
+    {
+        if (GridManager.Instance.IntArray[depth, width] == (int)GridManager.GridState.Exist)
+        {
+            Debug.Log("当たり");
+            return true;
+        }
+        else
+        {
+            Debug.Log("外れ");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// destroyする
+    /// </summary>
+    void StrikeTarget()
+    {
+        var gameManager = GameManager.Instance;
+        gameManager.RecordStrikePoint(_depth, _width);
+
+        var gridManager = GridManager.Instance;
+        var array = gridManager.GameObjectArray;
+        if (array[_depth, _width].transform.childCount != 0)
+        {
+            //Destroy(array[_depth, _width].transform.GetChild(0).gameObject);
+            // FindGameObjectsWithTagは非アクティブなオブジェクトを探せない　
+
+            // →　非アクティブにするだけで、あとはリストを更新するだけでいい
+            for (var i = 0; i < array[_depth, _width].transform.childCount; i++)
+            {
+                array[_depth, _width].transform.GetChild(i).gameObject.SetActive(false);
+                // 非表示にしているだけで、子オブジェクトままであるため
+            }
+
+            // 状態を更新
+            gridManager.ChangeArray(GridManager.GridState.Empty, _depth, _width);
+        }
+        gameManager.AddTurnCount(1);
     }
 }

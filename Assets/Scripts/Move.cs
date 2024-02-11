@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,7 +35,7 @@ public class Move : MonoBehaviour
 
     void Start()
     {
-
+        CurrentState = State.None;
     }
 
     void Update()
@@ -124,6 +123,9 @@ public class Move : MonoBehaviour
         }
 
         // 移動とステートを更新
+
+        transform.parent = GridManager.Instance.GameObjectArray[nums[0], nums[1]].transform;
+
         var pos = GridManager.Instance.UseVector(nums[0], nums[1]);
         transform.position = new Vector3(pos.x, transform.position.y, pos.z);
         GridManager.Instance.ChangeArray(GridManager.GridState.Exist, nums[0], nums[1]);
