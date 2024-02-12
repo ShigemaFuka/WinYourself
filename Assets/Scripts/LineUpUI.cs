@@ -1,24 +1,24 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-/// “Á’è‚ÌƒIƒuƒWƒFƒNƒg‚ğŒé”Õ‚Ì–Ú‚Ì‚æ‚¤‚É”z’u‚·‚é
-/// GridManager‚ÌƒXƒe[ƒg‚ª•ÏX‚·‚é‚½‚Ñ‚ÉAUI‚Ì•\¦‚à•ÏX‚·‚é
+/// ç‰¹å®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç¢ç›¤ã®ç›®ã®ã‚ˆã†ã«é…ç½®ã™ã‚‹
+/// GridManagerã®ã‚¹ãƒ†ãƒ¼ãƒˆãŒå¤‰æ›´ã™ã‚‹ãŸã³ã«ã€UIã®è¡¨ç¤ºã‚‚å¤‰æ›´ã™ã‚‹
 /// </summary>
 public class LineUpUI : MonoBehaviour
 {
-    [SerializeField, Tooltip("”z’u‚µ‚½‚¢ƒIƒuƒWƒFƒNƒg")] GameObject _object = default;
-    [Tooltip("c‚ÌŒÂ”")] int _height = 0;
-    [Tooltip("‰¡‚ÌŒÂ”")] int _width = 0;
-    [SerializeField, Tooltip("c‚ÌŠÔŠu")] float _heightInterval = 1.0f;
-    [SerializeField, Tooltip("‰¡‚ÌŠÔŠu")] float _widthInterval = 1.0f;
+    [SerializeField, Tooltip("é…ç½®ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")] GameObject _object = default;
+    [Tooltip("ç¸¦ã®å€‹æ•°")] int _height = 0;
+    [Tooltip("æ¨ªã®å€‹æ•°")] int _width = 0;
+    [SerializeField, Tooltip("ç¸¦ã®é–“éš”")] float _heightInterval = 1.0f;
+    [SerializeField, Tooltip("æ¨ªã®é–“éš”")] float _widthInterval = 1.0f;
     [Tooltip("UI")] GameObject[,] _gameObjectArray = default;
-    [Tooltip("Šî€‚Æ‚È‚éˆÊ’u")] Vector3 _standardPos = default;
+    [Tooltip("åŸºæº–ã¨ãªã‚‹ä½ç½®")] Vector3 _standardPos = default;
 
-    [Tooltip("ƒeƒLƒXƒg@ƒCƒ“ƒfƒbƒNƒX”Ô†")] Text[,] _indexArray = default;
-    [Tooltip("ƒeƒLƒXƒg@ó‘Ô")] Text[,] _numArray = default;
+    [Tooltip("ãƒ†ã‚­ã‚¹ãƒˆã€€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·")] Text[,] _indexArray = default;
+    [Tooltip("ãƒ†ã‚­ã‚¹ãƒˆã€€çŠ¶æ…‹")] Text[,] _numArray = default;
     [SerializeField] bool _isShow = false;
 
-    #region ƒvƒƒpƒeƒB
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     public GameObject[,] GameObjectArray { get => _gameObjectArray; }
     #endregion
 
@@ -36,7 +36,7 @@ public class LineUpUI : MonoBehaviour
         {
             for (var j = 0; j < _width; j++)
             {
-                // ©g‚ÌqƒIƒuƒWƒFƒNƒg‚É‚·‚é
+                // è‡ªèº«ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã™ã‚‹
                 var go = Instantiate(_object, transform);
                 if (go)
                 {
