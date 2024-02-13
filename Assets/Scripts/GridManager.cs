@@ -1,29 +1,57 @@
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [Tooltip("ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚é‚½‚ß‚ÌƒpƒuƒŠƒbƒN•Ï”")] public static GridManager Instance = default;
-    [SerializeField, Tooltip("c‚ÌŒÂ”")] int _depth = 4;
-    [SerializeField, Tooltip("‰¡‚ÌŒÂ”")] int _width = 4;
-    [Tooltip("ŠeƒOƒŠƒbƒh‚Ìó‘Ô‚ğint‚ÅŠi”[‚µ‚½”z—ñ")] static int[,] _intArray = default;
-    [Tooltip("ŠeƒOƒŠƒbƒh‚ÌˆÊ’uî•ñ‚ğŠi”[‚µ‚½”z—ñ")] static Vector3[,] _vectorArray = default;
-    [Tooltip("ƒOƒŠƒbƒh‚ğ¬‚·ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg")] static GameObject[,] _gameObjectArray = default;
+    [Tooltip("ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒ‘ãƒ–ãƒªãƒƒã‚¯å¤‰æ•°")] public static GridManager Instance = default;
+    [SerializeField, Tooltip("ç¸¦ã®å€‹æ•°")] int _depth = 4;
+    [SerializeField, Tooltip("æ¨ªã®å€‹æ•°")] int _width = 4;
+    [Tooltip("å„ã‚°ãƒªãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’intã§æ ¼ç´ã—ãŸé…åˆ—")] static int[,] _intArray = default;
+    [Tooltip("å„ã‚°ãƒªãƒƒãƒ‰ã®ä½ç½®æƒ…å ±ã‚’æ ¼ç´ã—ãŸé…åˆ—")] static Vector3[,] _vectorArray = default;
+    [Tooltip("ã‚°ãƒªãƒƒãƒ‰ã‚’æˆã™ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")] static GameObject[,] _standArray = default;
+    [Tooltip("é€ƒã’ã‚‹å´ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ—")] static List<GameObject> _runawayList = default;
 
-    #region ƒvƒƒpƒeƒB
-    /// <summary> c‚ÌŒÂ” </summary>
-    public int Depth { get => _depth; }
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
-    /// <summary> ‰¡‚ÌŒÂ” </summary>
-    public int Width { get => _width; }
+    /// <summary> ç¸¦ã®å€‹æ•° </summary>
+    public int Depth
+    {
+        get => _depth;
+    }
 
-    /// <summary> ŠeƒOƒŠƒbƒh‚Ìuó‘Ôv‚ğint‚ÅŠi”[‚µ‚½”z—ñ </summary>
-    public int[,] IntArray { get => _intArray; /*set => _intArray = value;*/ }
+    /// <summary> æ¨ªã®å€‹æ•° </summary>
+    public int Width
+    {
+        get => _width;
+    }
 
-    /// <summary> ŠeƒOƒŠƒbƒh‚ÌuˆÊ’uî•ñv‚ğŠi”[‚µ‚½”z—ñ </summary>
-    public Vector3[,] VectorArray { get => _vectorArray; set => _vectorArray = value; }
+    /// <summary> å„ã‚°ãƒªãƒƒãƒ‰ã®ã€ŒçŠ¶æ…‹ã€ã‚’intã§æ ¼ç´ã—ãŸé…åˆ— </summary>
+    public int[,] IntArray
+    {
+        get => _intArray; /*set => _intArray = value;*/
+    }
 
-    /// <summary> ƒOƒŠƒbƒh‚ğ¬‚·ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg </summary>
-    public GameObject[,] GameObjectArray { get => _gameObjectArray; set => _gameObjectArray = value; }
+    /// <summary> å„ã‚°ãƒªãƒƒãƒ‰ã®ã€Œä½ç½®æƒ…å ±ã€ã‚’æ ¼ç´ã—ãŸé…åˆ— </summary>
+    public Vector3[,] VectorArray
+    {
+        get => _vectorArray;
+        set => _vectorArray = value;
+    }
+
+    /// <summary> ã‚°ãƒªãƒƒãƒ‰ã‚’æˆã™ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ </summary>
+    public GameObject[,] StandArray
+    {
+        get => _standArray;
+        set => _standArray = value;
+    }
+
+    /// <summary> é€ƒã’ã‚‹å´ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ— </summary>
+    public List<GameObject> RunawayList
+    {
+        get => _runawayList;
+        set => _runawayList = value;
+    }
+
     #endregion
 
     private void Awake()
@@ -36,11 +64,13 @@ public class GridManager : MonoBehaviour
 
     public enum GridState
     {
-        /// <summary> ˆÚ“®æ‚ÌŒó•â </summary>
+        /// <summary> ç§»å‹•å…ˆã®å€™è£œ </summary>
         Option = -1,
-        /// <summary> ‹ó </summary>
+
+        /// <summary> ç©º </summary>
         Empty,
-        /// <summary> Šù‚É‚¢‚é </summary>
+
+        /// <summary> æ—¢ã«ã„ã‚‹ </summary>
         Exist
     }
 
@@ -48,23 +78,20 @@ public class GridManager : MonoBehaviour
     {
         _intArray = new int[Depth, Width];
         VectorArray = new Vector3[Depth, Width];
-        GameObjectArray = new GameObject[Depth, Width];
+        StandArray = new GameObject[Depth, Width];
+        RunawayList = new List<GameObject>();
     }
 
     void Update()
     {
-
     }
 
     /// <summary>
-    /// -1 : —\–ñ
-    /// 0 : ‰½‚à‚È‚¢
-    /// 1 : ‚·‚Å‚É‚¢‚é
-    /// -100 : out of range
+    /// ç‰¹å®šã®ã‚°ãƒªãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’çŸ¥ã‚‹ã“ã¨ãŒã§ãã‚‹
     /// </summary>
-    /// <param name="d"></param>
-    /// <param name="w"></param>
-    /// <returns></returns>
+    /// <param name="d"> ç¸¦ </param>
+    /// <param name="w"> æ¨ª </param>
+    /// <returns>-1 : äºˆç´„ 0 : ä½•ã‚‚ãªã„ 1 : ã™ã§ã«ã„ã‚‹ -100 : out of range</returns>
     public int CheckArray(int d, int w)
     {
         if (d >= Depth || w >= Width || d < 0 || w < 0)
@@ -73,9 +100,9 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// ç‰¹å®šã®ã‚°ãƒªãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’å¤‰æ›´ã™ã‚‹
     /// </summary>
-    /// <param name="state">-1, 0, 1</param>
+    /// <param name="state">å¤‰ãˆãŸã„ã‚¹ãƒ†ãƒ¼ãƒˆï¼šã€€-1, 0, 1</param>
     /// <param name="d"></param>
     /// <param name="w"></param>
     public void ChangeArray(GridState state, int d, int w)

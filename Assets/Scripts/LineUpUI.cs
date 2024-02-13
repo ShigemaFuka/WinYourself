@@ -61,7 +61,6 @@ public class LineUpUI : MonoBehaviour
                     ShowText(i, j);
                 }
             }
-            //_isShow = false;
         }
     }
 

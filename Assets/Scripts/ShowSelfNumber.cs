@@ -1,35 +1,36 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ©g‚ª‰½”Ô–Ú‚©‚ğUI‚Å•\¦
-/// ‚±‚ê‚ªƒAƒ^ƒbƒ`‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚©‚ç’T‚µo‚µAƒŠƒXƒg‚Ì‰½”Ô–Ú‚©‚ğŒ©‚é
+/// è‡ªèº«ãŒä½•ç•ªç›®ã‹ã‚’UIã§è¡¨ç¤º
+/// ã“ã‚ŒãŒã‚¢ã‚¿ãƒƒãƒã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªã‚¹ãƒˆã‹ã‚‰æ¢ã—å‡ºã—ã€ãƒªã‚¹ãƒˆã®ä½•ç•ªç›®ã‹ã‚’è¦‹ã‚‹
 /// </summary>
 public class ShowSelfNumber : MonoBehaviour
 {
-    [SerializeField, Tooltip("e‚Æ‚·‚é‚à‚Ì")] GameObject _parent = default;
-    [SerializeField, Tooltip("ƒŠƒXƒg‚ğ‚ÂƒIƒuƒWƒFƒNƒg")] RunawayController _runawayController = default;
-    [SerializeField, Tooltip("©g‚ª‰½”Ôè‚©")] int num = 0;
-    [SerializeField, Tooltip("•\¦‚·‚éƒeƒLƒXƒg")] Text _text = default;
-    [Tooltip("ƒŠƒXƒg")] List<GameObject> _list = new List<GameObject>();
+    [SerializeField, Tooltip("ãƒªã‚¹ãƒˆã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
+    RunawayController _runawayController = default;
 
-    void Start()
+    [SerializeField, Tooltip("è‡ªèº«ãŒä½•ç•ªæ‰‹ã‹")] int _num = 0;
+    [SerializeField, Tooltip("è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ")] Text _text = default;
+    [Tooltip("ãƒªã‚¹ãƒˆ")] List<GameObject> _list = default;
+    
+    void OnEnable()
     {
         _runawayController = FindAnyObjectByType<RunawayController>();
         _list = _runawayController.MoveComponents;
-        num = _list.FindIndex(item => item == transform.gameObject);
-        _text.text = (num + 1).ToString();
+        _num = _list.FindIndex(item => item == transform.gameObject);
+        _text.text = (_num + 1).ToString();
     }
 
     void Update()
     {
-        // ƒŠƒXƒg‚É•ÏX‚ª‚ ‚Á‚½‚ç
+        // ãƒªã‚¹ãƒˆã«å¤‰æ›´ãŒã‚ã£ãŸã‚‰
         if (_list != _runawayController.MoveComponents)
         {
             _list = _runawayController.MoveComponents;
-            num = _list.FindIndex(item => item == transform.gameObject);
-            _text.text = (num + 1).ToString();
+            _num = _list.FindIndex(item => item == transform.gameObject);
+            _text.text = (_num + 1).ToString();
             Debug.Log("ShowSelfNumber");
         }
     }

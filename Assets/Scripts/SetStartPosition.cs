@@ -1,85 +1,127 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+
 /// <summary>
-/// “¦‚°‚é‘¤‚Æ‚È‚éƒIƒuƒWƒFƒNƒg‚ğƒOƒŠƒbƒh‚Ì‚Ç‚±‚ğ‰ŠúˆÊ’u‚É‚·‚é‚©
-/// bool‚ª^‚Æ‚«”z’u‚Å‚«‚é
+/// é€ƒã’ã‚‹å´ã¨ãªã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚°ãƒªãƒƒãƒ‰ã®ã©ã“ã‚’åˆæœŸä½ç½®ã«ã™ã‚‹ã‹
+/// boolãŒçœŸã¨ãé…ç½®ã§ãã‚‹
 /// </summary>
 public class SetStartPosition : MonoBehaviour
 {
-    //[SerializeField, Tooltip("ƒOƒŠƒbƒh‚ğ¬‚·•À‚Ñ‚ÌƒIƒuƒWƒFƒNƒg‚ÌA”z—ñ‚ğ•Û‚µ‚Ä‚¢‚éƒNƒ‰ƒX")] LineUpObjects _lineUpObjects = default;
-    [Header("’u‚«‚½‚¢êŠ‚ÌƒCƒ“ƒfƒbƒNƒX”Ô†ic‰¡j")]
-    [Tooltip("’u‚«‚½‚¢êŠicj")] int _depth = 0;
-    [Tooltip("’u‚«‚½‚¢êŠi‰¡j")] int _width = 0;
-    [Header("’u‚«‚½‚¢êŠi‚‚³j")]
-    [SerializeField, Tooltip("’u‚«‚½‚¢êŠi‚‚³j")] float _yPos = 0;
-    [Header("’u‚«‚½‚¢ƒIƒuƒWƒFƒNƒg")]
-    [SerializeField, Tooltip("’u‚«‚½‚¢ƒIƒuƒWƒFƒNƒg")] GameObject _gameObject = default;
-    [Header("ƒIƒuƒWƒFƒNƒg‚Ì”")]
-    [SerializeField, Tooltip("ƒIƒuƒWƒFƒNƒg‚Ì”")] int _amount = 2;
-    [Header("”z’u‚·‚é‚©")]
-    [SerializeField, Tooltip("”z’u‚·‚é‚©")] bool _isSet = false;
-    Vector3 _position = default;
+    [Header("ç½®ããŸã„å ´æ‰€ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ï¼ˆç¸¦æ¨ªï¼‰")] [Tooltip("ç½®ããŸã„å ´æ‰€ï¼ˆç¸¦ï¼‰")]
+    int _depth = 0;
+
+    [Tooltip("ç½®ããŸã„å ´æ‰€ï¼ˆæ¨ªï¼‰")] int _width = 0;
+
+    [Header("ç½®ããŸã„å ´æ‰€ï¼ˆé«˜ã•ï¼‰")] [SerializeField, Tooltip("ç½®ããŸã„å ´æ‰€ï¼ˆé«˜ã•ï¼‰")]
+    float _yPos = 0;
+
+    [Header("ç½®ããŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")] [SerializeField, Tooltip("ç½®ããŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
+    GameObject _gameObject = default;
+
+    [Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°")] [SerializeField, Tooltip("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°")]
+    int _amount = 2;
+
+    [Header("é…ç½®ã™ã‚‹ã‹")] [SerializeField, Tooltip("é…ç½®ã™ã‚‹ã‹")]
+    bool _isSet = false;
+
+    [Tooltip("å¤‰æ›´ã™ã‚‹ãŸã‚ã®ä½ç½®æƒ…å ±")] Vector3 _position = default;
+    [Tooltip("ã‚°ãƒªãƒƒãƒ‰ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‹ã®é…åˆ—")] GameObject[,] _array = default;
+
+    GameManager _gameManager = default;
 
     void Start()
     {
-
+        _array = GridManager.Instance.StandArray;
+        _gameManager = GameManager.Instance;
     }
 
     void Update()
     {
-        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.SetStartPosition)
+        if (_gameManager.NowProcessState == GameManager.ProcessState.SetStartPosition)
+        {
             _isSet = true;
+            Debug.Log("ProcessState SetPosition");
+        }
 
         if (_isSet)
         {
             for (var i = 0; i < _amount; i++)
             {
-                SetPosition();
+                SetPosition(i);
             }
+
+            Debug.Log("SetPosition");
             _isSet = false;
-            //GameManager.Instance.NowTurnState = GameManager.TurnState.ShowRunaway;
-            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.ShowRunaway);
+            if (GameManager.Instance.NowPhaseState == GameManager.PhaseState.FirstPhase)
+            {
+                GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.ShowRunaway);
+            }
+            else
+            {
+                GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.None);
+            }
         }
     }
 
     /// <summary>
-    /// ˆÊ’u’²®
+    /// ä½ç½®èª¿æ•´
     /// </summary>
-    void SetPosition()
+    public void SetPosition(int index)
     {
-        //var array = _lineUpObjects.GameObjectArray;
-        var array = GridManager.Instance.GameObjectArray;
-
-        // ƒOƒŠƒbƒh‚ª–¢”z’u‚Ì‚Æ‚«
-        if (array.Length == 0)
+        // ã‚°ãƒªãƒƒãƒ‰ãŒæœªé…ç½®ã®ã¨ã
+        if (_array.Length == 0)
         {
-            Debug.LogError("ƒOƒŠƒbƒh‚ª–¢”z’u");
+            Debug.LogError("ã‚°ãƒªãƒƒãƒ‰ãŒæœªé…ç½®");
             return;
         }
 
-        string message = "‹ó‚ª‚ ‚è‚Ü‚¹‚ñ";
-        for (var i = 0; i < array.Length; i++)
+        string message = "ç©ºãŒã‚ã‚Šã¾ã›ã‚“";
+        for (var i = 0; i < _array.Length; i++)
         {
-            _depth = Random.Range(0, array.GetLength(0));
-            _width = Random.Range(0, array.GetLength(1));
-            // ‹ó‚Ì‚Æ‚±‚ë‚¾‚Á‚½‚çˆÊ’u‚ğ•ÏX‚µAƒ‹[ƒv‚ğ”²‚¯‚é
+            _depth = Random.Range(0, _array.GetLength(0));
+            _width = Random.Range(0, _array.GetLength(1));
+            // ç©ºã®ã¨ã“ã‚ã ã£ãŸã‚‰ä½ç½®ã‚’å¤‰æ›´ã—ã€ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
             if (GridManager.Instance.CheckArray(_depth, _width) == (int)GridManager.GridState.Empty)
             {
-                _position = array[_depth, _width].transform.position;
+                _position = _array[_depth, _width].transform.position;
                 message = $"{_depth} {_width}";
                 break;
             }
         }
-        // ‹ó‚«‚ª‚È‚¢‚Æ‚«‚¾‚¯o—Í‚Å—Ç‚¢
-        if (message == "‹ó‚ª‚ ‚è‚Ü‚¹‚ñ")
+
+        // ç©ºããŒãªã„ã¨ãã ã‘å‡ºåŠ›ã§è‰¯ã„
+        if (message == "ç©ºãŒã‚ã‚Šã¾ã›ã‚“")
             Debug.LogWarning(message);
 
         GridManager.Instance.ChangeArray(GridManager.GridState.Exist, _depth, _width);
-        //var go = Instantiate(_gameObject, transform);
-        var go = Instantiate(_gameObject, GridManager.Instance.GameObjectArray[_depth, _width].transform);
+
+        GameObject go = default;
+        if (GameManager.Instance.NowPhaseState == GameManager.PhaseState.FirstPhase)
+        {
+            go = Instantiate(_gameObject);
+            GridManager.Instance.RunawayList.Add(go);
+        }
+        else
+        {
+            // ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºã§ã¯ç”Ÿæˆã›ãšã¨ã‚‚ã€æ—¢ã«ã‚ã‚‹
+            go = GridManager.Instance.RunawayList[index];
+        }
+
+        // è¦ªã®æŒ‡å®šã¨ä½ç½®è¨­å®š
+        go.transform.parent = GridManager.Instance.StandArray[_depth, _width].transform;
         go.transform.position = new Vector3(_position.x, _yPos, _position.z);
         var move = go.GetComponent<Move>();
-
+        // åˆæœŸä½ç½®ã‚’æ•™ãˆã‚‹
         move.CurrentIndex[0] = _depth;
         move.CurrentIndex[1] = _width;
+    }
+
+    /// <summary>
+    /// ãƒœã‚¿ãƒ³ã§å‘¼ã¶
+    /// </summary>
+    /// <param name="flag"></param>
+    public void OnClick(bool flag)
+    {
+        _isSet = flag;
+        Debug.LogWarning("_isSet");
     }
 }

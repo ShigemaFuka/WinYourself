@@ -1,52 +1,83 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
+
 /// <summary>
-/// “¦‚°‚é‘¤
-/// qƒIƒuƒWƒFƒNƒg‚Æ‚È‚éMoveƒNƒ‰ƒX‚ğ‚à‚ÂƒIƒuƒWƒFƒNƒg‚ğAã‚©‚ç‡‚És“®‚³‚¹‚ée
-/// ŠeqƒIƒuƒWƒFƒNƒg‚Ìbool‚ğ^‚É‚µA‚·‚×‚Ä‚ÌqƒIƒuƒWƒFƒNƒg‚É‚»‚Ìˆ—‚ªI‚í‚Á‚½‚çANPC‚Ìs“®ƒ^[ƒ“‚ªI—¹‚µ‚½‚±‚Æ‚ğ’m‚ç‚¹‚é
+/// é€ƒã’ã‚‹å´
+/// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ãªã‚‹Moveã‚¯ãƒ©ã‚¹ã‚’ã‚‚ã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã€ä¸Šã‹ã‚‰é †ã«è¡Œå‹•ã•ã›ã‚‹è¦ª
+/// å„å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®boolã‚’çœŸã«ã—ã€ã™ã¹ã¦ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãã®å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ã€NPCã®è¡Œå‹•ã‚¿ãƒ¼ãƒ³ãŒçµ‚äº†ã—ãŸã“ã¨ã‚’çŸ¥ã‚‰ã›ã‚‹
 /// </summary>
 public class RunawayController : MonoBehaviour
 {
-    [Header("qƒIƒuƒWƒFƒNƒg‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚·‚é‚©")]
-    [SerializeField, Tooltip("qƒIƒuƒWƒFƒNƒg‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚·‚é‚©")] bool _isGetComponents = false;
-    [Header("“¦‚°‚é‘¤‚Ìƒ^[ƒ“‚©")]
-    [SerializeField, Tooltip("“¦‚°‚é‘¤‚Ìƒ^[ƒ“‚©")] bool _isRunawayTurn = false;
-    [Tooltip("‘Ò‹@ŠÔ")] WaitForSeconds _wfs = default;
-    [Header("€”õ‚©‚çˆÚ“®‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
-    [SerializeField, Tooltip("€”õ‚©‚çˆÚ“®‚Ü‚Å‚Ì‘Ò‹@ŠÔ")] float _waitTime = 1.5f;
-    [Header("‚·‚×‚Ä‚ÌqƒIƒuƒWƒFƒNƒg")]
-    [SerializeField] List<GameObject> _moveComponents = default;
+    #region å®£è¨€
 
-    #region ƒvƒƒpƒeƒB
-    /// <summary> ƒOƒŠƒbƒh‚ğ¬‚·ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg </summary>
-    public List<GameObject> MoveComponents { get => _moveComponents; /*set => _moveComponents = value;*/ }
+    [Header("å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹ã‹")] [SerializeField, Tooltip("å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹ã‹")]
+    bool _isGetComponents = false;
+
+    [Header("é€ƒã’ã‚‹å´ã®ã‚¿ãƒ¼ãƒ³ã‹")] [SerializeField, Tooltip("é€ƒã’ã‚‹å´ã®ã‚¿ãƒ¼ãƒ³ã‹")]
+    bool _isRunawayTurn = false;
+
+    [Tooltip("å¾…æ©Ÿæ™‚é–“")] WaitForSeconds _wfs = default;
+
+    [Header("æº–å‚™ã‹ã‚‰ç§»å‹•ã¾ã§ã®å¾…æ©Ÿæ™‚é–“")] [SerializeField, Tooltip("æº–å‚™ã‹ã‚‰ç§»å‹•ã¾ã§ã®å¾…æ©Ÿæ™‚é–“")]
+    float _waitTime = 1.5f;
+
+    [Header("ã™ã¹ã¦ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")] [SerializeField]
+    List<GameObject> _moveComponents = default;
+
+    [Tooltip("ã‚²ãƒ¼ãƒ ãƒãƒã‚¸ãƒ£ãƒ¼ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹")] GameManager _gameManager = default;
+
     #endregion
 
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+
+    /// <summary> ã‚°ãƒªãƒƒãƒ‰ã‚’æˆã™ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ </summary>
+    public List<GameObject> MoveComponents
+    {
+        get => _moveComponents; /*set => _moveComponents = value;*/
+    }
+
+    #endregion
 
     void Start()
     {
         _wfs = new WaitForSeconds(_waitTime);
         _moveComponents = new List<GameObject>();
+        _gameManager = GameManager.Instance;
     }
 
     void Update()
     {
+        if (_gameManager.NowProcessState == GameManager.ProcessState.ListUpdate)
+        {
+            _isGetComponents = true;
+        }
+
+        // ãƒªã‚¹ãƒˆã®æ›´æ–°
         if (_isGetComponents)
         {
             _moveComponents.Clear();
-
             _moveComponents = GameObject.FindGameObjectsWithTag("Runaway").ToList();
             Debug.Log("clear");
             _isGetComponents = false;
-            GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.Record);
+            if (_gameManager.NowPhaseState == GameManager.PhaseState.FirstPhase)
+            {
+                _gameManager.ChangeNowProcessState(GameManager.ProcessState.Record);
+            }
+            else
+            {
+                _gameManager.ChangeNowProcessState(GameManager.ProcessState.SetStartPosition);
+                Debug.Log("ToSetStartPosition");
+            }
         }
 
-        // Ø‚è‘Ö‚í‚Á‚½uŠÔ
-        if (GameManager.Instance.NowProcessState == GameManager.ProcessState.MoveRunaway
-            && GameManager.Instance.OldProcessState == GameManager.ProcessState.Record)
+        // åˆ‡ã‚Šæ›¿ã‚ã£ãŸç¬é–“
+        // ç¬¬ï¼‘ãƒ•ã‚§ãƒ¼ã‚ºï¼šnowP == moveR && oldP == record
+        // ç¬¬ï¼’ãƒ•ã‚§ãƒ¼ã‚ºï¼šnowP == moveR && oldP == pick
+        if (_gameManager.NowProcessState == GameManager.ProcessState.MoveRunaway
+            && (_gameManager.OldProcessState == GameManager.ProcessState.Record
+                || _gameManager.OldProcessState == GameManager.ProcessState.PickUp))
         {
             _isRunawayTurn = true;
             Debug.Log("_isRunawayTurn");
@@ -59,6 +90,10 @@ public class RunawayController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã²ã¨ã¤ãšã¤é †ã«è¡Œå‹•ã—ã¦ã„ã‚‹ã“ã¨ã‚’è¦‹ã›ã‚‹ãŸã‚
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PrepareAndMove()
     {
         for (var i = 0; i < _moveComponents.Count; i++)
@@ -66,10 +101,23 @@ public class RunawayController : MonoBehaviour
             var move = _moveComponents[i].GetComponent<Move>();
             move.CurrentState = Move.State.Prepare;
 
-            Debug.Log($"i : {i}    ’·‚³ : {_moveComponents.Count}");
+            Debug.Log($"i : {i}    é•·ã• : {_moveComponents.Count}");
             yield return _wfs;
         }
-        GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.Check);
+
+        // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…¨ã¦ãŒè¡Œå‹•ã—çµ‚ãˆãŸã‚‰
+        _gameManager.ChangeNowProcessState(GameManager.ProcessState.Check);
         Debug.Log($"check");
+    }
+
+    /// <summary>
+    /// ãƒœã‚¿ãƒ³ã§çœŸå½ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+    /// ã‚¿ãƒ¼ãƒ³ãŒçµŒéã™ã‚‹ãŸã³ã«å‘¼ã¶
+    /// ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºã¸ç§»ã‚‹ã¨ãã‚‚å‘¼ã¶
+    /// </summary>
+    /// <param name="flag"></param>
+    public void OnClick(bool flag)
+    {
+        _isGetComponents = flag;
     }
 }

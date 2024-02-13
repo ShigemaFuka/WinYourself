@@ -1,15 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-/// ‰½ƒ^[ƒ“Œo‰ß‚µ‚½‚©‚ğUI‚Å•\¦
-/// ƒ^[ƒ“”‚ªXV‚³‚ê‚½‚Æ‚«‚¾‚¯A•\¦“à—e‚ğ•ÏX‚·‚é
+/// ä½•ã‚¿ãƒ¼ãƒ³çµŒéã—ãŸã‹ã‚’UIã§è¡¨ç¤º
+/// ã‚¿ãƒ¼ãƒ³æ•°ãŒæ›´æ–°ã•ã‚ŒãŸã¨ãã ã‘ã€è¡¨ç¤ºå†…å®¹ã‚’å¤‰æ›´ã™ã‚‹
 /// </summary>
 public class ShowTurnCount : MonoBehaviour
 {
-    [Header("ƒeƒLƒXƒg")]
-    [SerializeField, Tooltip("ƒeƒLƒXƒg")] Text _text = default;
-    [SerializeField, Tooltip("ŒÃ‚¢’l‚ÌƒJƒEƒ“ƒg")] int _oldTurnCount = 0;
-    [SerializeField, Tooltip("XV‚³‚ê‚½’l‚ÌƒJƒEƒ“ƒg")] int _turnCount = 0;
+    [Header("ãƒ†ã‚­ã‚¹ãƒˆ")]
+    [SerializeField, Tooltip("ãƒ†ã‚­ã‚¹ãƒˆ")] Text _text = default;
+    [SerializeField, Tooltip("å¤ã„å€¤ã®ã‚«ã‚¦ãƒ³ãƒˆ")] int _oldTurnCount = 0;
+    [SerializeField, Tooltip("æ›´æ–°ã•ã‚ŒãŸå€¤ã®ã‚«ã‚¦ãƒ³ãƒˆ")] int _turnCount = 0;
 
     void Start()
     {

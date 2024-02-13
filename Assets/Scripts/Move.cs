@@ -1,29 +1,43 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Šî–{‚W•ûŒü‚Ì“à‚Ì‚P•ûŒü‚ÖˆÚ“®
-/// ‚W•ûŒü‚Æ‚àˆÚ“®‚Å‚«‚È‚¯‚ê‚ÎA‚»‚Ìê‚Å—¯‚Ü‚é
-/// ˆÚ“®”ÍˆÍ‚Í‚O`B
+/// åŸºæœ¬ï¼˜æ–¹å‘ã®å†…ã®ï¼‘æ–¹å‘ã¸ç§»å‹•
+/// ï¼˜æ–¹å‘ã¨ã‚‚ç§»å‹•ã§ããªã‘ã‚Œã°ã€ãã®å ´ã§ç•™ã¾ã‚‹
+/// ç§»å‹•ç¯„å›²ã¯ï¼ï½ã€‚
 /// </summary>
 public class Move : MonoBehaviour
 {
-    [Tooltip("Œ»İ‚ÌˆÊ’u  —ájd, w")] int[] _currentIndex = new int[2];
-    [Tooltip("ˆÚ“®‚Å‚«‚é”ÍˆÍ‚ÌƒŠƒXƒg")] List<string> _mobileList = new();
-    [Header("ˆÚ“®‚Å‚«‚éƒGƒŠƒA‚ğ’T‚·€”õ‚ğ‚·‚é‚©")]
-    [SerializeField, Tooltip("ˆÚ“®‚Å‚«‚éƒGƒŠƒA‚ğ’T‚·€”õ‚ğ‚·‚é‚©")] bool _isPrepare = false;
-    [Header("ˆÚ“®‚·‚é‚©")]
-    [SerializeField, Tooltip("ˆÚ“®‚·‚é‚©")] bool _isMove = false;
-    [Header("ˆÚ“®æ")]
-    [SerializeField, Tooltip("ˆÚ“®æ")] int[] nums = new int[2];
-    [SerializeField, Tooltip("Œ»İ‚ÌƒXƒe[ƒg")] State _currentState = State.None;
+    [Tooltip("ç¾åœ¨ã®ä½ç½®  ä¾‹ï¼‰d, w")] int[] _currentIndex = new int[2];
 
-    #region ƒvƒƒpƒeƒB
-    public int[] CurrentIndex { get => _currentIndex; set => _currentIndex = value; }
-    public bool IsPrepare { get => _isPrepare; set => _isPrepare = value; }
-    public bool IsMove { get => _isMove; set => _isMove = value; }
-    public State CurrentState { get => _currentState; set => _currentState = value; }
+    [Tooltip("ç§»å‹•ã§ãã‚‹ç¯„å›²ã®ãƒªã‚¹ãƒˆ")] List<string> _mobileList = new();
+
+    // [Header("ç§»å‹•ã§ãã‚‹ã‚¨ãƒªã‚¢ã‚’æ¢ã™æº–å‚™ã‚’ã™ã‚‹ã‹")]
+    // [SerializeField, Tooltip("ç§»å‹•ã§ãã‚‹ã‚¨ãƒªã‚¢ã‚’æ¢ã™æº–å‚™ã‚’ã™ã‚‹ã‹")] bool _isPrepare = false;
+    // [Header("ç§»å‹•ã™ã‚‹ã‹")]
+    // [SerializeField, Tooltip("ç§»å‹•ã™ã‚‹ã‹")] bool _isMove = false;
+    [Header("ç§»å‹•å…ˆ")] [SerializeField, Tooltip("ç§»å‹•å…ˆ")]
+    int[] _nums = new int[2];
+
+    [SerializeField, Tooltip("ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆ")] State _currentState = State.None;
+
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+
+    public int[] CurrentIndex
+    {
+        get => _currentIndex;
+        set => _currentIndex = value;
+    }
+
+    // public bool IsPrepare { get => _isPrepare; set => _isPrepare = value; }
+    // public bool IsMove { get => _isMove; set => _isMove = value; }
+    public State CurrentState
+    {
+        get => _currentState;
+        set => _currentState = value;
+    }
+
     #endregion
 
     public enum State
@@ -48,12 +62,12 @@ public class Move : MonoBehaviour
     }
 
     /// <summary>
-    /// _isMove‚ª^‚É‚È‚é‚½‚Ñ‚ÉŒÄ‚Ño‚·
-    /// ˆÚ“®€”õ
+    /// _isMoveãŒçœŸã«ãªã‚‹ãŸã³ã«å‘¼ã³å‡ºã™
+    /// ç§»å‹•æº–å‚™
     /// </summary>
     void PreparationForMovement()
     {
-        // –ˆ‰ñƒŠƒXƒg‚ğ‰Šú‰»
+        // æ¯å›ãƒªã‚¹ãƒˆã‚’åˆæœŸåŒ–
         _mobileList.Clear();
         AddMobileArea();
         Determine();
@@ -62,24 +76,21 @@ public class Move : MonoBehaviour
     }
 
     /// <summary>
-    /// ˆÚ“®‚Å‚«‚éƒGƒŠƒA‚ğƒŠƒXƒg‚ÉŠi”[
+    /// ç§»å‹•ã§ãã‚‹ã‚¨ãƒªã‚¢ã‚’ãƒªã‚¹ãƒˆã«æ ¼ç´
     /// </summary>
     void AddMobileArea()
     {
         var baseY = _currentIndex[0];
         var baseX = _currentIndex[1];
 
-        //_depthMax = GridManager.Instance.Depth;
-        //_widthMax = GridManager.Instance.Width;
-
         for (var i = baseY - 1; i < baseY + 2; i++)
         {
             for (var j = baseX - 1; j < baseX + 2; j++)
             {
-                // ¡‚¢‚é‚Æ‚±‚ë‚Í”ò‚Î‚·
+                // ä»Šã„ã‚‹ã¨ã“ã‚ã¯é£›ã°ã™
                 if (i == baseY && j == baseX)
                     continue;
-                // ‹ó‚«‚Å‚Í‚È‚¢‚Æ‚±‚ë‚Í”ò‚Î‚·
+                // ç©ºãã§ã¯ãªã„ã¨ã“ã‚ã¯é£›ã°ã™
                 else if (GridManager.Instance.CheckArray(i, j) != (int)GridManager.GridState.Empty)
                     continue;
                 else
@@ -92,51 +103,51 @@ public class Move : MonoBehaviour
     }
 
     /// <summary>
-    /// ˆÚ“®æ‚ğ‘I‘ğ
+    /// ç§»å‹•å…ˆã‚’é¸æŠ
     /// </summary>
     /// <returns></returns>
     string Select()
     {
-        // ‚W•ûŒü‚Æ‚àˆÚ“®‚Å‚«‚È‚¯‚ê‚ÎA‚»‚Ìê‚Å‘Ò‹@
+        // ï¼˜æ–¹å‘ã¨ã‚‚ç§»å‹•ã§ããªã‘ã‚Œã°ã€ãã®å ´ã§å¾…æ©Ÿ
         if (_mobileList.Count == 0)
             return $"{CurrentIndex[0]} {CurrentIndex[1]}";
         else
-            // ƒŠƒXƒg‚©‚ç1‚Â‘I‚ñ‚ÅˆÚ“®æ‚Æ‚·‚é
+            // ãƒªã‚¹ãƒˆã‹ã‚‰1ã¤é¸ã‚“ã§ç§»å‹•å…ˆã¨ã™ã‚‹
             return _mobileList[UnityEngine.Random.Range(0, _mobileList.Count)];
     }
 
     /// <summary>
-    /// ˆÚ“®æ‚Ìî•ñ‚ğŠi”[
+    /// ç§»å‹•å…ˆã®æƒ…å ±ã‚’æ ¼ç´
     /// </summary>
     void Determine()
     {
-        nums = Array.ConvertAll(Select().Split(), int.Parse);
+        _nums = Array.ConvertAll(Select().Split(), int.Parse);
     }
 
     void Movement()
     {
         foreach (var item in _mobileList)
         {
-            // ˆÚ“®‚Å‚«‚éƒGƒŠƒA‚ğ-1‚Å•\¦‚µ‚½‚ ‚Æ‚ÍA©g‚ªˆÚ“®‚Å‚«‚é‚æ‚¤‚ÉƒGƒŠƒA“à‚ğ0i‹ó‚«j‚É‚·‚é
+            // ç§»å‹•ã§ãã‚‹ã‚¨ãƒªã‚¢ã‚’-1ã§è¡¨ç¤ºã—ãŸã‚ã¨ã¯ã€è‡ªèº«ãŒç§»å‹•ã§ãã‚‹ã‚ˆã†ã«ã‚¨ãƒªã‚¢å†…ã‚’0ï¼ˆç©ºãï¼‰ã«ã™ã‚‹
             var nums = Array.ConvertAll(item.Split(), int.Parse);
             GridManager.Instance.ChangeArray(GridManager.GridState.Empty, nums[0], nums[1]);
         }
 
-        // ˆÚ“®‚ÆƒXƒe[ƒg‚ğXV
+        // ç§»å‹•ã¨ã‚¹ãƒ†ãƒ¼ãƒˆã‚’æ›´æ–°
 
-        transform.parent = GridManager.Instance.GameObjectArray[nums[0], nums[1]].transform;
+        transform.parent = GridManager.Instance.StandArray[_nums[0], _nums[1]].transform;
 
-        var pos = GridManager.Instance.UseVector(nums[0], nums[1]);
+        var pos = GridManager.Instance.UseVector(_nums[0], _nums[1]);
         transform.position = new Vector3(pos.x, transform.position.y, pos.z);
-        GridManager.Instance.ChangeArray(GridManager.GridState.Exist, nums[0], nums[1]);
+        GridManager.Instance.ChangeArray(GridManager.GridState.Exist, _nums[0], _nums[1]);
 
-        // Œ³‹‚½êŠ‚ğ‹ó‚«‚É‚·‚é ‚»‚Ìê‘Ò‹@‚Ì‚Æ‚«‚Í‹ó‚«‚É‚µ‚È‚¢
+        // å…ƒå±…ãŸå ´æ‰€ã‚’ç©ºãã«ã™ã‚‹ ãã®å ´å¾…æ©Ÿã®ã¨ãã¯ç©ºãã«ã—ãªã„
         if (_mobileList.Count != 0)
             GridManager.Instance.ChangeArray(GridManager.GridState.Empty, CurrentIndex[0], CurrentIndex[1]);
 
-        // ¡‚¢‚éêŠ‚ğXV
-        CurrentIndex[0] = nums[0];
-        CurrentIndex[1] = nums[1];
+        // ä»Šã„ã‚‹å ´æ‰€ã‚’æ›´æ–°
+        CurrentIndex[0] = _nums[0];
+        CurrentIndex[1] = _nums[1];
         //Debug.Log($"CurrentIndex : {CurrentIndex[0]} {CurrentIndex[1]}");
 
         //_isMove = false;

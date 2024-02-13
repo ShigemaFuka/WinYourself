@@ -1,60 +1,56 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+
 /// <summary>
-/// “Á’è‚ÌƒIƒuƒWƒFƒNƒg‚ğŒé”Õ‚Ì–Ú‚Ì‚æ‚¤‚É”z’u‚·‚é
+/// ç‰¹å®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç¢ç›¤ã®ç›®ã®ã‚ˆã†ã«é…ç½®ã™ã‚‹
 /// </summary>
 public class LineUpObjects : MonoBehaviour
 {
-    [SerializeField, Tooltip("”z’u‚µ‚½‚¢ƒIƒuƒWƒFƒNƒg")] GameObject _object = default;
-    [Tooltip("c‚ÌŒÂ”")] int _depth = 0;
-    [Tooltip("‰¡‚ÌŒÂ”")] int _wide = 0;
-    [SerializeField, Tooltip("c‚ÌŠÔŠu")] float _depthInterval = 1.0f;
-    [SerializeField, Tooltip("‰¡‚ÌŠÔŠu")] float _wideInterval = 1.0f;
-    //[Tooltip("ƒOƒŠƒbƒh‚ğ¬‚·•À‚Ñ‚ÌƒIƒuƒWƒFƒNƒg‚Ì”z—ñ")] GameObject[,] _gameObjectArray = default;
-    [Tooltip("Šî€‚Æ‚È‚éˆÊ’u")] Vector3 _standardPos = default;
+    [SerializeField, Tooltip("é…ç½®ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
+    GameObject _object = default;
 
-    //#region ƒvƒƒpƒeƒB
-    //public GameObject[,] GameObjectArray { get => _gameObjectArray; }
-    //#endregion
+    [Tooltip("ç¸¦ã®å€‹æ•°")] int _depth = 0;
+    [Tooltip("æ¨ªã®å€‹æ•°")] int _wide = 0;
+    [SerializeField, Tooltip("ç¸¦ã®é–“éš”")] float _depthInterval = 1.0f;
+    [SerializeField, Tooltip("æ¨ªã®é–“éš”")] float _wideInterval = 1.0f;
+    [Tooltip("åŸºæº–ã¨ãªã‚‹ä½ç½®")] Vector3 _standardPos = default;
 
     void Start()
     {
         _depth = GridManager.Instance.Depth;
         _wide = GridManager.Instance.Width;
-        // ‚±‚ê‚ğƒAƒ^ƒbƒ`‚·‚éƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚Í(0,0,0)‚ÉB
+        // ã“ã‚Œã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã¯(0,0,0)ã«ã€‚
         _standardPos = transform.position;
-        //_gameObjectArray = new GameObject[_depth, _wide];
 
         for (var i = 0; i < _depth; i++)
         {
             for (var j = 0; j < _wide; j++)
             {
-                // ©g‚ÌqƒIƒuƒWƒFƒNƒg‚É‚·‚é
+                // è‡ªèº«ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã™ã‚‹
                 var go = Instantiate(_object, transform);
                 if (go)
                 {
                     float xPos = j * _wideInterval;
                     float zPos = -i * _depthInterval;
                     go.transform.position = _standardPos + new Vector3(xPos, 0f, zPos);
-                    //_gameObjectArray[i, j] = go; 
-                    GridManager.Instance.GameObjectArray[i, j] = go;
+                    GridManager.Instance.StandArray[i, j] = go;
                 }
             }
         }
+
         SetVector();
     }
 
     /// <summary>
-    /// GridManager‚ÉˆÊ’uî•ñ‚ğİ’è‚·‚é
+    /// GridManagerã«ä½ç½®æƒ…å ±ã‚’è¨­å®šã™ã‚‹
     /// </summary>
     void SetVector()
     {
-        //var array = GameObjectArray;
-        var array = GridManager.Instance.GameObjectArray;
+        var array = GridManager.Instance.StandArray;
 
-        // ƒOƒŠƒbƒh‚ª–¢”z’u‚Ì‚Æ‚«
+        // ã‚°ãƒªãƒƒãƒ‰ãŒæœªé…ç½®ã®ã¨ã
         if (array.Length == 0)
         {
-            Debug.LogError("ƒOƒŠƒbƒh‚ª–¢”z’u");
+            Debug.LogError("ã‚°ãƒªãƒƒãƒ‰ãŒæœªé…ç½®");
             return;
         }
 
@@ -62,7 +58,7 @@ public class LineUpObjects : MonoBehaviour
         {
             for (var j = 0; j < array.GetLength(1); j++)
             {
-                // ˆÊ’uî•ñ‚ğİ’è‚·‚é
+                // ä½ç½®æƒ…å ±ã‚’è¨­å®šã™ã‚‹
                 GridManager.Instance.SetInitializeVector(array, i, j);
             }
         }

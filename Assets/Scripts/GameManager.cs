@@ -1,57 +1,97 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
-/// ƒQ[ƒ€‚Ìó‘ÔŠÇ—‚ğ‚·‚é
-/// NPC‚Ìƒ^[ƒ“‚ÆAƒnƒ“ƒ}[‚Ìƒ^[ƒ“‚ğŠÇ—
+/// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ç®¡ç†ã‚’ã™ã‚‹
+/// é€ƒã’ã‚‹å´ã®ã‚¿ãƒ¼ãƒ³ã¨ã€å©ãå´ã®ã‚¿ãƒ¼ãƒ³ã‚’ç®¡ç†
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    [Tooltip("ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚é‚½‚ß‚ÌƒpƒuƒŠƒbƒN•Ï”")] public static GameManager Instance = default;
+    #region å®£è¨€
 
-    [Header("Œ»İ‚ÌƒQ[ƒ€ƒXƒe[ƒg")]
-    [SerializeField, Tooltip("Œ»İ‚ÌƒQ[ƒ€ƒXƒe[ƒg")] GameState _gameState = GameState.InGame;
-    [Header("Œ»İ‚ÌƒV[ƒ“ƒXƒe[ƒg")]
-    [SerializeField, Tooltip("Œ»İ‚ÌƒV[ƒ“ƒXƒe[ƒg")] SceneState _sceneState = SceneState.InGame;
-    [Header("Œ»İ‚ÌƒvƒƒZƒXƒXƒe[ƒg")]
-    [SerializeField, Tooltip("Œ»İ‚ÌƒvƒƒZƒXƒXƒe[ƒg")] ProcessState _nowProcessState = ProcessState.None;
-    [Header("‚PƒtƒŒ[ƒ€‘O‚ÌƒvƒƒZƒXƒXƒe[ƒg")]
-    [SerializeField, Tooltip("‚PƒtƒŒ[ƒ€‘O‚ÌƒvƒƒZƒXƒXƒe[ƒg")] ProcessState _oldProcessState = ProcessState.None;
+    [Tooltip("ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒ‘ãƒ–ãƒªãƒƒã‚¯å¤‰æ•°")] public static GameManager Instance = default;
 
-    [Header("Œ»İ‚ÌƒtƒF[ƒYiƒCƒ“ƒQ[ƒ€’†j")]
-    [SerializeField, Tooltip("Œ»İ‚ÌƒtƒF[ƒYiƒCƒ“ƒQ[ƒ€’†j")] PhaseState _nowPhaseState = PhaseState.FistPhase;
+    [Header("ç¾åœ¨ã®ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ãƒˆ")] [SerializeField, Tooltip("ç¾åœ¨ã®ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ãƒˆ")]
+    GameState _gameState = GameState.InGame;
 
-    [Header("‰½ƒ^[ƒ“§‚©")]
-    [SerializeField, Tooltip("‰½ƒ^[ƒ“§‚©")] int _totalTurn = default;
-    [Header("‰½ƒ^[ƒ“Œo‰ß‚µ‚½‚©")]
-    [SerializeField, Tooltip("‰½ƒ^[ƒ“Œo‰ß‚µ‚½‚©")] int _turnCount = default;
+    [Header("ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ")] [SerializeField, Tooltip("ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ")]
+    SceneState _sceneState = SceneState.InGame;
 
-    [Header("‘I‘ğ‚µ‚½‰ÓŠ‚Ì‹L˜^")]
-    [SerializeField, Tooltip("‘I‘ğ‚µ‚½‰ÓŠ‚Ì‹L˜^")]
+    [Header("ç¾åœ¨ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ")] [SerializeField, Tooltip("ç¾åœ¨ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ")]
+    ProcessState _nowProcessState = ProcessState.None;
+
+    [Header("ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ")] [SerializeField, Tooltip("ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ")]
+    ProcessState _oldProcessState = ProcessState.None;
+
+    [Header("ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºï¼ˆã‚¤ãƒ³ã‚²ãƒ¼ãƒ ä¸­ï¼‰")] [SerializeField, Tooltip("ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºï¼ˆã‚¤ãƒ³ã‚²ãƒ¼ãƒ ä¸­ï¼‰")]
+    PhaseState _nowPhaseState = PhaseState.FirstPhase;
+
+    [Header("ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ•ã‚§ãƒ¼ã‚ºï¼ˆã‚¤ãƒ³ã‚²ãƒ¼ãƒ ä¸­ï¼‰")] [SerializeField, Tooltip("ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ•ã‚§ãƒ¼ã‚ºï¼ˆã‚¤ãƒ³ã‚²ãƒ¼ãƒ ä¸­ï¼‰")]
+    PhaseState _oldPhaseState = PhaseState.FirstPhase;
+
+    [Header("ä½•ã‚¿ãƒ¼ãƒ³åˆ¶ã‹")] [SerializeField, Tooltip("ä½•ã‚¿ãƒ¼ãƒ³åˆ¶ã‹")]
+    int _totalTurn = default;
+
+    [Header("ä½•ã‚¿ãƒ¼ãƒ³çµŒéã—ãŸã‹")] [SerializeField, Tooltip("ä½•ã‚¿ãƒ¼ãƒ³çµŒéã—ãŸã‹")]
+    int _turnCount = default;
+
+    [Header("é¸æŠã—ãŸç®‡æ‰€ã®è¨˜éŒ²")] [SerializeField, Tooltip("é¸æŠã—ãŸç®‡æ‰€ã®è¨˜éŒ²")]
     StrikePoint _strikePoint = default;
 
-    [Header("ƒŠƒXƒgi‘I‘ğ‚µ‚½‰ÓŠ‚Ì‹L˜^j")]
-    [SerializeField, Tooltip("ƒŠƒXƒgi‘I‘ğ‚µ‚½‰ÓŠ‚Ì‹L˜^j")] List<StrikePoint> _strikePointList = default;
+    [Header("ãƒªã‚¹ãƒˆï¼ˆé¸æŠã—ãŸç®‡æ‰€ã®è¨˜éŒ²ï¼‰")] [SerializeField, Tooltip("ãƒªã‚¹ãƒˆï¼ˆé¸æŠã—ãŸç®‡æ‰€ã®è¨˜éŒ²ï¼‰")]
+    List<StrikePoint> _strikePointList = default;
 
-    #region ƒvƒƒpƒeƒB
-    /// <summary> Œ»İ‚ÌƒvƒƒZƒXƒXƒe[ƒg </summary>
-    public ProcessState NowProcessState { get => _nowProcessState; }
+    #endregion
 
-    /// <summary> ‚PƒtƒŒ[ƒ€‘O‚ÌƒvƒƒZƒXƒXƒe[ƒg </summary>
-    public ProcessState OldProcessState { get => _oldProcessState; }
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
-    /// <summary> ‚PƒtƒŒ[ƒ€‘O‚ÌƒvƒƒZƒXƒXƒe[ƒg </summary>
-    public PhaseState NowPhaseState { get => _nowPhaseState; }
+    /// <summary> ç¾åœ¨ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ </summary>
+    public ProcessState NowProcessState
+    {
+        get => _nowProcessState;
+    }
 
-    /// <summary> ‰½ƒ^[ƒ“§‚© </summary>
-    public int TotalTurn { get => _totalTurn; }
+    /// <summary> ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ </summary>
+    public ProcessState OldProcessState
+    {
+        get => _oldProcessState;
+    }
 
-    /// <summary> ‰½ƒ^[ƒ“Œo‰ß‚µ‚½‚© </summary>
-    public int TurnCount { get => _turnCount; }
+    /// <summary> ç¾åœ¨ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ </summary>
+    public PhaseState NowPhaseState
+    {
+        get => _nowPhaseState;
+    }
+
+    /// <summary> ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ </summary>
+    public PhaseState OldPhaseState
+    {
+        get => _oldPhaseState;
+    }
+
+    /// <summary> ä½•ã‚¿ãƒ¼ãƒ³åˆ¶ã‹ </summary>
+    public int TotalTurn
+    {
+        get => _totalTurn;
+    }
+
+    /// <summary> ä½•ã‚¿ãƒ¼ãƒ³çµŒéã—ãŸã‹ </summary>
+    public int TurnCount
+    {
+        get => _turnCount;
+    }
+
+    /// <summary> ä½•ã‚¿ãƒ¼ãƒ³çµŒéã—ãŸã‹ </summary>
+    public List<StrikePoint> StrikePointList
+    {
+        get => _strikePointList;
+        set => _strikePointList = value;
+    }
+
     #endregion
 
     /// <summary>
-    /// GameManager‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŠi”[
+    /// GameManagerã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ ¼ç´
     /// </summary>
     void Awake()
     {
@@ -61,7 +101,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary> ƒQ[ƒ€‚Ìó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^ </summary>
+    /// <summary> ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹ </summary>
     public enum GameState
     {
         Start,
@@ -71,79 +111,92 @@ public class GameManager : MonoBehaviour
         Result,
     }
 
-    /// <summary> ƒV[ƒ“‚Ìó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^ </summary>
+    /// <summary> ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹ </summary>
     public enum SceneState
     {
         Start,
         InGame,
+
         //GameOver,
         Result,
     }
 
-    /// <summary> i—‘‘¤‚Æƒnƒ“ƒ}[‘¤‚©‚Ìjó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^ </summary>
+    /// <summary> ãƒ—ãƒ­ã‚»ã‚¹çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹ </summary>
     public enum ProcessState
     {
         None,
 
-        /// <summary> ‰ŠúˆÊ’uİ’è </summary>
+        /// <summary> åˆæœŸä½ç½®è¨­å®š </summary>
         SetStartPosition,
+        
+        /// <summary> ç¬¬ï¼’ãƒ•ã‚§ãƒ¼ã‚ºã§ä½¿ç”¨ </summary>
+        ListUpdate, 
 
-        /// <summary> “¦‚°‚é‘¤‚ªoŒ» </summary>
-        ShowRunaway,
+        /// <summary> é€ƒã’ã‚‹å´ãŒå‡ºç¾ </summary>
+        ShowRunaway, // èª­ã¿å–ã‚‰ã‚Œã¦ã¯ã„ãªã„
 
-        /// <summary> XV </summary>
-        Update,
-        // ‹°‚ç‚­AƒXƒe[ƒg‚ÌØ‚è‘Ö‚¦‚ª‘‚·‚¬‚ÄAv‚Á‚½‹““®‚É‚È‚Á‚Ä‚¢‚È‚¢
-        // ‚»‚Ì‘Îô‚Æ‚µ‚ÄAè“®‚ÅRunawayController‚Ì_isGetComponents‚ğ^‚É‚µ‚Ä‚é‚©‚çA—v‚ç‚È‚¢‚©‚à
+        /// <summary> æ›´æ–° </summary>
+        Update, // èª­ã¿å–ã‚‰ã‚Œã¦ã¯ã„ãªã„
+        // æã‚‰ãã€ã‚¹ãƒ†ãƒ¼ãƒˆã®åˆ‡ã‚Šæ›¿ãˆãŒæ—©ã™ãã¦ã€æ€ã£ãŸæŒ™å‹•ã«ãªã£ã¦ã„ãªã„
+        // ãã®å¯¾ç­–ã¨ã—ã¦ã€æ‰‹å‹•ã§RunawayControllerã®_isGetComponentsã‚’çœŸã«ã—ã¦ã‚‹ã‹ã‚‰ã€è¦ã‚‰ãªã„ã‹ã‚‚
 
-        /// <summary> ’@‚­ˆÊ’u‹L˜^ </summary>
+        /// <summary> ç¬¬ï¼‘ãƒ•ã‚§ãƒ¼ã‚ºã§ä½¿ç”¨ å©ãä½ç½® è¨˜éŒ² </summary>
         Record,
 
-        /// <summary> “¦‚°‚é‘¤‚ªs“® </summary>
+        /// <summary> ç¬¬ï¼’ãƒ•ã‚§ãƒ¼ã‚ºã§ä½¿ç”¨ å©ãä½ç½® è¨­å®š </summary>
+        PickUp,
+
+        /// <summary> é€ƒã’ã‚‹å´ãŒè¡Œå‹• </summary>
         MoveRunaway,
 
-        /// <summary> ’@‚¯‚é‚©”»’è </summary>
+        /// <summary> å©ã‘ã‚‹ã‹åˆ¤å®š </summary>
         Check,
 
-        /// <summary> “¦‚°‚é‘¤‚ªÁ‚³‚ê‚éor–Æ‚ê‚é </summary>
+        /// <summary> é€ƒã’ã‚‹å´ãŒæ¶ˆã•ã‚Œã‚‹orå…ã‚Œã‚‹ </summary>
         DeadOrLive
     }
 
-    /// <summary> ƒCƒ“ƒQ[ƒ€‚ÌƒtƒF[ƒY‚Ìó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^ </summary>
+    /// <summary> ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ã®ãƒ•ã‚§ãƒ¼ã‚ºã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹ </summary>
     public enum PhaseState
     {
-        [Tooltip("ƒvƒŒƒCƒ„[‚ª’@‚­‘¤")]
-        FistPhase,
-        [Tooltip("ƒvƒŒƒCƒ„[‚ª“¦‚°‚é‘¤")]
-        SecondPhase,
+        [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå©ãå´")] FirstPhase,
+        [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒé€ƒã’ã‚‹å´")] SecondPhase,
     }
 
     void Start()
     {
-
     }
 
     void Update()
     {
         _oldProcessState = _nowProcessState;
+        _oldPhaseState = _nowPhaseState;
 
         if (TurnCount >= TotalTurn)
         {
-            _nowPhaseState = PhaseState.SecondPhase;
+            if (_nowPhaseState == PhaseState.FirstPhase)
+            {
+                _nowPhaseState = PhaseState.SecondPhase;
+                _turnCount = 0;
+            }
+            else
+            {
+                Debug.Log("ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºã®ã‚¿ãƒ¼ãƒ³ãŒçµ‚äº†");
+            }
         }
     }
 
     /// <summary>
-    /// Œ»İ‚ÌƒvƒƒZƒXƒXƒe[ƒg•ÏX
+    /// ç¾åœ¨ã®ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰æ›´
     /// </summary>
-    /// <param name="state">•Ï‚¦‚½‚¢ƒXƒe[ƒg</param>
+    /// <param name="state">å¤‰ãˆãŸã„ã‚¹ãƒ†ãƒ¼ãƒˆ</param>
     public void ChangeNowProcessState(ProcessState state)
     {
         _nowProcessState = state;
     }
 
     /// <summary>
-    /// ƒ^[ƒ“‚ğ‰ÁZ
+    /// ã‚¿ãƒ¼ãƒ³ã‚’åŠ ç®—
     /// </summary>
     /// <param name="value"></param>
     public void AddTurnCount(int value)
@@ -152,19 +205,31 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ’@‚¢‚½i‘I‘ğ‚µ‚½j‰ÓŠ‚ğ‹L˜^‚·‚é
+    /// å©ã„ãŸï¼ˆé¸æŠã—ãŸï¼‰ç®‡æ‰€ã‚’è¨˜éŒ²ã™ã‚‹
     /// </summary>
     public void RecordStrikePoint(int depth, int width)
     {
-        _strikePoint.depth = depth;
-        _strikePoint.width = width;
+        _strikePoint._depth = depth;
+        _strikePoint._width = width;
         _strikePointList.Add(_strikePoint);
     }
 
     [System.Serializable]
-    struct StrikePoint // \‘¢‘Ì‚Ì’è‹`
+    public struct StrikePoint // æ§‹é€ ä½“ã®å®šç¾©
     {
-        public int depth;
-        public int width;
+        public int _depth;
+
+        public int _width;
+        //public int Depth { get => depth; set => depth = value; }
+        //public int Width { get => width; set => width = value; }
     }
+
+    /// <summary>
+    /// ãƒœã‚¿ãƒ³ã§æ¬¡ã®ãƒ•ã‚§ãƒ¼ã‚ºã«é€²ã‚€ã“ã¨ã‚’ç¢ºèªã•ã›ã‚‹ã¨ãã«ã€
+    /// ãƒ—ãƒ­ã‚»ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å¤‰æ›´
+    /// </summary>
+    // public void OnClick()
+    // {
+    //     _nowProcessState = ProcessState.PickUp;
+    // }
 }
