@@ -67,8 +67,8 @@ public class Move : MonoBehaviour
     /// </summary>
     void PreparationForMovement()
     {
-        // 毎回リストを初期化
-        _mobileList.Clear();
+        // // 毎回リストを初期化
+        // _mobileList.Clear();
         AddMobileArea();
         Determine();
         //CurrentState = State.Stay;
@@ -80,6 +80,9 @@ public class Move : MonoBehaviour
     /// </summary>
     void AddMobileArea()
     {
+        // 毎回リストを初期化
+        _mobileList.Clear();
+
         var baseY = _currentIndex[0];
         var baseX = _currentIndex[1];
 

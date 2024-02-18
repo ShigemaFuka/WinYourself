@@ -55,7 +55,7 @@ public class FirstPhaseStrike : MonoBehaviour
     {
         if (GameManager.Instance.NowProcessState == GameManager.ProcessState.Check)
         {
-            Check(_depth, _width);
+            Check(Depth, Width);
             GameManager.Instance.ChangeNowProcessState(GameManager.ProcessState.DeadOrLive);
         }
 
@@ -142,9 +142,9 @@ public class FirstPhaseStrike : MonoBehaviour
             {
                 if (vectorArray[i, j].x == hitX && vectorArray[i, j].z == hitZ)
                 {
-                    _depth = i;
-                    _width = j;
-                    Debug.Log(GridManager.Instance.IntArray[_depth, _width]);
+                    Depth = i;
+                    Width = j;
+                    Debug.Log(GridManager.Instance.IntArray[Depth, Width]);
                     return;
                 }
             }
@@ -179,21 +179,17 @@ public class FirstPhaseStrike : MonoBehaviour
         var gameManager = GameManager.Instance;
         // 第二フェーズでは記録不要
         if (GameManager.Instance.NowPhaseState == GameManager.PhaseState.FirstPhase)
-            gameManager.RecordStrikePoint(_depth, _width);
+            gameManager.RecordStrikePoint(Depth, Width);
 
         var gridManager = GridManager.Instance;
         var array = gridManager.StandArray;
-        //if (array[_depth, _width].transform.childCount != 0)
         if (_isHit)
         {
-            //Destroy(array[_depth, _width].transform.GetChild(0).gameObject);
-            // FindGameObjectsWithTagは非アクティブなオブジェクトを探せない　
-
-            // →　非アクティブにするだけで、あとはリストを更新するだけでいい
+            // 非アクティブにするだけで、あとはリストを更新するだけでいい
             for (var i = 0; i < array[_depth, _width].transform.childCount; i++)
             {
-                array[_depth, _width].transform.GetChild(i).gameObject.SetActive(false);
                 // 非表示にしているだけで、子オブジェクトままであるため
+                array[_depth, _width].transform.GetChild(i).gameObject.SetActive(false);
             }
 
             // 状態を更新
